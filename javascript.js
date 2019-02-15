@@ -76,7 +76,7 @@ function setCategory(category) {
     case 'gmg':
       currentURLs = girlMeetsGirlURLs;
       break;
-    case 'trap':
+    case 'traps':
       currentURLs = trapURLs;
       break;
     case 'random':
