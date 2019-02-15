@@ -159,3 +159,12 @@ let ahegaoURLs = [
   ,'https://steamuserimages-a.akamaihd.net/ugc/922545932092516203/19BE256C9CE2CF7D4DB0585A1448BC1186A54CF8/'
   ,'https://res.cloudinary.com/teepublic/image/private/s--Fue8nsik--/t_Preview/b_rgb:191919,c_limit,f_jpg,h_630,q_90,w_630/v1524231206/production/designs/2610674_1.jpg'
 ];
+
+// Thank you, https://www.w3schools.com/jsref/jsref_concat_array.asp
+let allURLs = animeGirlURLs;
+allURLs = allURLs.concat(animeBoyURLs);
+allURLs = allURLs.concat(romanceURLs);
+allURLs = allURLs.concat(boyMeetsBoyURLs);
+allURLs = allURLs.concat(girlMeetsGirlURLs);
+allURLs = allURLs.concat(trapURLs);
+allURLs = allURLs.concat(ahegaoURLs);

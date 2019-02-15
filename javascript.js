@@ -9,8 +9,9 @@
 
 // Button onclick functionality
 // Thank u jQuery
-$(document).on("click", "button", function() {
+$(document).on("click", "button", function(e) {
   set(this.id);
+  document.getElementById("status").style.visibility = "";
 });
 
 // Function set
@@ -18,14 +19,15 @@ $(document).on("click", "button", function() {
 //  to maintain content persistence throughout web-browsing
 // @param category The category to set, taken from the id of the button clicked
 function set(category) {
+  // Update the value in storage, then update the category var in our window, then run animeTime to replace the images
   chrome.storage.local.set({currentURLs:category}, function() {});
-  setCategory(category);
 }
 
 // Function getRandomAnimePic
 // Grabs a random item from the currently selected array
 function getRandomAnimePic() {
   // alert('get random anime pic')
+
   let numPics = currentURLs.length;
   let index = Math.floor(Math.random() * numPics);
   let pic = currentURLs[index];
@@ -57,6 +59,7 @@ function review() {
 }
 
 function setCategory(category) {
+  // Thank you, https://www.w3schools.com/js/js_switch.asp
   switch(category) {
     case 'girls':
       currentURLs = animeGirlURLs;
@@ -75,6 +78,9 @@ function setCategory(category) {
       break;
     case 'trap':
       currentURLs = trapURLs;
+      break;
+    case 'random':
+      currentURLs = allURLs;
       break;
     default:
       currentURLs = ahegaoURLs;
@@ -119,5 +125,6 @@ let currentURLs;
 
 // Used for sites that reload images
 let dictURL = {};
+
 
 main();
