@@ -1,0 +1,57 @@
+body {
+  margin: 10px;
+  display: block;
+  font-size: 14px;
+  width: 300px;
+  /* font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif; */
+
+  /* white-space: nowrap; */
+  /* background-color: blanchedAlmond; */
+}
+
+h1 {
+font-size: 14px;
+}
+
+p {
+font-size: 18px;
+font-style: normal;
+font-variant: normal;
+  margin: 0px;
+  padding: 5px;
+}
+
+hr {
+  color: black;
+}
+
+#container {
+align-items: center;
+display: flex;
+justify-content: space-between;
+}
+
+a:link {
+  color: brown;
+  background-color: transparent;
+  text-decoration: none;
+  outline: none;
+}
+
+a:visited {
+  color: brown;
+  background-color: transparent;
+  text-decoration: none;
+  outline: none;
+}
+
+a:hover {
+  color: pink;
+  background-color: transparent;
+  outline: none;
+  /*text-decoration: underline;*/
+}
+
+button {
+  font-size: 13px;
+}
