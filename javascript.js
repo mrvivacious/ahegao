@@ -105,19 +105,22 @@ function animeTime() {
 
 function main() {
   // Wait for page to load for smoother repoint process
-  if (!(window.location.href.includes(chrome.runtime.id)) {
-    window.onload = () => {
-      chrome.storage.local.get("currentURLs", function(returnValue) {
-        let category = returnValue.currentURLs;
+  window.onload = () => {
+    chrome.storage.local.get("currentURLs", function(returnValue) {
+      let category = returnValue.currentURLs;
+      let mode = document.getElementById('currentMode');
 
-        // Set our category and load the pics
-        setCategory(category);
-        animeTime();
+      // Set our category and load the pics
+      if (mode) {
+        mode.innerText = category;
+      }
+      
+      setCategory(category);
+      animeTime();
 
-        // Continually check
-        setInterval(review, 1000);
-      });
-    }
+      // Continually check
+      setInterval(review, 1000);
+    });
   }
 }
 
