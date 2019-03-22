@@ -105,17 +105,19 @@ function animeTime() {
 
 function main() {
   // Wait for page to load for smoother repoint process
-  window.onload = () => {
-    chrome.storage.local.get("currentURLs", function(returnValue) {
-      let category = returnValue.currentURLs;
+  if (!(window.location.href.includes(chrome.runtime.id)) {
+    window.onload = () => {
+      chrome.storage.local.get("currentURLs", function(returnValue) {
+        let category = returnValue.currentURLs;
 
-      // Set our category and load the pics
-      setCategory(category);
-      animeTime();
+        // Set our category and load the pics
+        setCategory(category);
+        animeTime();
 
-      // Continually check
-      setInterval(review, 1000);
-    });
+        // Continually check
+        setInterval(review, 1000);
+      });
+    }
   }
 }
 
