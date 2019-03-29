@@ -12,6 +12,17 @@
 $(document).on("click", "button", function(e) {
   set(this.id);
   document.getElementById("status").style.visibility = "";
+
+  // set the right text for the extension page
+  const category = this.id;
+  let mode = document.getElementById('currentMode');
+  if (mode) {
+    mode.innerText = category;
+  }
+  // do the live reload by sending message to active tab
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, {category});
+  });
 });
 
 // Function set
@@ -103,9 +114,20 @@ function animeTime() {
   }
 }
 
+// Function acceptExtensionMessage
+// This will be registered as a callback and triggered everytime a message is sent
+// from the extension to the content script. This is usually called for live reload
+function acceptExtensionMessage(request, sender, sendResponse) {
+  setCategory(request.category);
+  animeTime();
+}
+
 function main() {
   // Wait for page to load for smoother repoint process
   window.onload = () => {
+    // add message receiver for live reload
+    chrome.runtime.onMessage.addListener(acceptExtensionMessage);
+
     chrome.storage.local.get("currentURLs", function(returnValue) {
       let category = returnValue.currentURLs;
       let mode = document.getElementById('currentMode');
