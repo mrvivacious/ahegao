@@ -7,7 +7,7 @@
   "author": "Vivek Bhookya",
 
   "browser_action": {
-    "default_icon": "seasonal.png",
+    /* "default_icon": "seasonal.png", */
     "default_popup": "index.html",
     "default_title": "ahegaoooo"
   },

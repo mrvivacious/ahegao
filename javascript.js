@@ -136,7 +136,7 @@ function main() {
       if (mode) {
         mode.innerText = category;
       }
-      
+
       setCategory(category);
       animeTime();
 
@@ -154,4 +154,4 @@ let currentURLs;
 let dictURL = {};
 
 
-main();
+// main();
