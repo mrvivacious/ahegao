@@ -7,7 +7,7 @@
   "author": "Vivek Bhookya",
 
   "browser_action": {
-    /* "default_icon": "seasonal.png", */
+    "default_icon": "ahegao_icon.png",
     "default_popup": "index.html",
     "default_title": "ahegaoooo"
   },
@@ -17,14 +17,14 @@
              "128": "icons/heart-icon-128.png" }, */
 
   "background": {
-      "scripts": ["jquery.min.js", "links.js", "javascript.js", "themes.js"],
+      "scripts": ["jquery.min.js", "links.js", "javascript.js"],
       "persistent": false
       },
 
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["jquery.min.js", "links.js", "javascript.js", "themes.js"],
+      "js": ["jquery.min.js", "links.js", "javascript.js"],
       "run_at": "document_end"
     }
   ],

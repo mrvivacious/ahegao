@@ -8,6 +8,9 @@
 // o preview mode
 
 // onOffSwitch
+// TODO do we really need to use jquery, try to use the vanilla javascript method
+// Maybe make a separate file for popup functions cuz this file is getting
+//  a little too verbose given the context for me
 $(document).on("click", "p", function(e) {
   // Get the value from storage
   let onOffSpan = document.getElementById('onOffStatus');
