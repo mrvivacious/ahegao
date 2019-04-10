@@ -7,6 +7,27 @@
 // o enable multiple lists at a time
 // o preview mode
 
+// onOffSwitch
+$(document).on("click", "p", function(e) {
+  // Get the value from storage
+  let onOffSpan = document.getElementById('onOffStatus');
+  let onOffStatus = onOffSpan.innerText.toLowerCase();
+
+  // alert(onOffStatus);
+
+  // If on, do off process
+  if (onOffStatus === "on") {
+    onOffSpan.innerText = "Off";
+    document.getElementById('onOffSwitch').style.background = "lightCoral";
+  }
+
+  // If off, do on process
+  if (onOffStatus === "off") {
+    onOffSpan.innerText = "On";
+    document.getElementById('onOffSwitch').style.background = "lightGreen";
+  }
+});
+
 // Button onclick functionality
 // Thank u jQuery
 $(document).on("click", "button", function(e) {

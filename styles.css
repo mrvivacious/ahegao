@@ -1,13 +1,14 @@
 /* Font source: https://www.1001fonts.com/zud-juice-font.html#license */
 /* Thank you, https://www.w3schools.com/Css/css3_fonts.asp */
-/* @font-face {
+@font-face {
   font-family: zudJuice;
   src: url(zud-juice/zudj.TTF);
 }
 
 * {
-  font-family: zudJuice;
-} */
+  /* font-family: zudJuice; */
+}
+
 
 #popup {
   margin: 10px;
@@ -20,6 +21,7 @@
   /* background-color: blanchedAlmond; */
 }
 
+/* Thank you, https://www.w3schools.com/cssref/css3_pr_filter.asp */
 #onOffSwitch:hover {
   filter: grayscale(40%);
   cursor: pointer;
