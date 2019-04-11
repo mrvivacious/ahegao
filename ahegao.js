@@ -154,12 +154,12 @@ function main() {
     chrome.storage.sync.get(hostname, function(returnValue) {
       // Found
       if (returnValue[hostname]) {
-        alert('Is off listed');
+        // alert('Is off listed');
         return;
       }
       // Proceed with animeTime
       else {
-        alert('is not off listed')
+        // alert('is not off listed')
 
         chrome.storage.sync.get("currentURLs", function(returnValue) {
           // alert('urls gotten!')
