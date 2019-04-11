@@ -88,7 +88,7 @@ function animeTime() {
   let imgs = document.getElementsByTagName('img');
   let len = imgs.length;
 
-  alert(len);
+  // alert(len);
 
   // iterate thru all the images and change their src
   for (let img = 0; img < len; img++) {
@@ -120,35 +120,38 @@ function main() {
     // alert('hostname = ' + hostname);
 
     // If URL is in storage, do not proceed
-    chrome.storage.sync.get([hostname], function(returnValue) {
+    chrome.storage.sync.get(hostname, function(returnValue) {
       // Found
-      if (returnValue.hostname) {
+      alert(returnValue)
+      if (returnValue[hostname]) {
         alert('Is off listed');
         return;
       }
       // Proceed with animeTime
       else {
         alert('is not off listed')
-        // chrome.storage.sync.get("currentURLs", function(returnValue) {
-        //   let category = returnValue.currentURLs;
-        //   let mode = document.getElementById('currentMode');
-        //
-        //   // Set to ahegao by default
-        //   if (category === undefined) {
-        //     category = 'ahegao';
-        //     saveToStorage(category);
-        //   }
-        //   // Set our category and load the pics
-        //   if (mode) {
-        //     mode.innerText = category;
-        //   }
-        //
-        //   setCategory(category);
-        //   animeTime();
-        //
-        //   // Continually check
-        //   setInterval(review, 1000);
-        // }); // chrome.storage.sync.get currentURLs
+
+        chrome.storage.sync.get("currentURLs", function(returnValue) {
+          // alert('urls gotten!')
+          let category = returnValue.currentURLs;
+          let mode = document.getElementById('currentMode');
+
+          // Set to ahegao by default
+          if (category === undefined) {
+            category = 'ahegao';
+            saveToStorage(category);
+          }
+          // Set our category and load the pics
+          if (mode) {
+            mode.innerText = category;
+          }
+
+          setCategory(category);
+          animeTime();
+
+          // Continually check
+          setInterval(review, 1000);
+        }); // chrome.storage.sync.get currentURLs
       } // else
     }); // chrome.storage.sync.get hostname
   } // window.onload
