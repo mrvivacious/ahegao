@@ -112,22 +112,42 @@ function main() {
     // add message receiver for live reload
     chrome.runtime.onMessage.addListener(acceptExtensionMessage);
 
-    chrome.storage.local.get("currentURLs", function(returnValue) {
-      let category = returnValue.currentURLs;
-      let mode = document.getElementById('currentMode');
+    // Thank you, https://stackoverflow.com/questions/31696279/url-remains-undefined-in-chrome-tabs-query
+    // We use this because calling window.location from within a popup
+    //  returns the URL of the popup instead of the current website
+    chrome.tabs.query({'active': true, 'currentWindow': true}, function (tabs) {
+      let url = tabs[0].url;
+      let hostname = extractHostname(url);
 
-      // Set our category and load the pics
-      if (mode) {
-        mode.innerText = category;
-      }
+      // If URL is in storage, do not proceed
+      chrome.storage.sync.get([hostname], function(returnValue) {
+        if (returnValue.hostname) {
+          return;
+        }
+        // Proceed with animeTime
+        else {
+          chrome.storage.local.get("currentURLs", function(returnValue) {
+            let category = returnValue.currentURLs;
+            let mode = document.getElementById('currentMode');
 
-      setCategory(category);
-      animeTime();
+            if (mode === undefined) {
+              mode = 'ahegao';
+            }
+            // Set our category and load the pics
+            if (mode) {
+              mode.innerText = category;
+            }
 
-      // Continually check
-      setInterval(review, 1000);
-    });
-  }
+            setCategory(category);
+            animeTime();
+
+            // Continually check
+            setInterval(review, 1000);
+          }); // chrome.storage.local.get currentURLs
+        } // else
+      }); // chrome.storage.sync.get hostname
+    }); // chrome.tabs.query
+  } // window.onload
 }
 
 // Zing //
