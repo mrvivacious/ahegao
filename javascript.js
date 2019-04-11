@@ -106,6 +106,37 @@ function acceptExtensionMessage(request, sender, sendResponse) {
   animeTime();
 }
 
+// Thank you, https://stackoverflow.com/questions/8498592/extract-hostname-name-from-string
+function extractHostname(url) {
+  let hostname;
+
+  // Find & remove protocol (http, ftp, etc.) and get hostname
+  if (url.indexOf("//") > -1) {
+    // Split into ['https:', '', 'hostnameBeforePath']
+    // [2] grabs the 'hostnameBeforePath'
+    hostname = url.split('/')[2];
+  }
+  else {
+    // Otherwise, split the hostname and path and save the hostname
+    hostname = url.split('/')[0];
+  }
+
+  // Find & remove port number
+  hostname = hostname.split(':')[0];
+
+  // Find & remove "?"
+  hostname = hostname.split('?')[0];
+
+  // Thank you, https://github.com/mrvivacious/PorNo-_public/blob/master/porNo.js#L194
+  // If there is a www. header, remove it
+  if (hostname.includes('www.')) {
+    let idxOfPeriod = hostname.indexOf('.');
+    hostname = hostname.substring(idxOfPeriod + 1, hostname.length);
+  }
+
+  return hostname;
+}
+
 function main() {
   // Wait for page to load for smoother repoint process
   window.onload = () => {
@@ -122,7 +153,6 @@ function main() {
     // If URL is in storage, do not proceed
     chrome.storage.sync.get(hostname, function(returnValue) {
       // Found
-      alert(returnValue)
       if (returnValue[hostname]) {
         alert('Is off listed');
         return;
@@ -133,7 +163,7 @@ function main() {
 
         chrome.storage.sync.get("currentURLs", function(returnValue) {
           // alert('urls gotten!')
-          let category = returnValue.currentURLs;
+          let category = returnValue["currentURLs"];
           let mode = document.getElementById('currentMode');
 
           // Set to ahegao by default

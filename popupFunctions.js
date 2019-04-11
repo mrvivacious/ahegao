@@ -33,64 +33,82 @@ function extractHostname(url) {
 // Turn ahegao on or off for a particular website,
 //  such as Google Images (LMAO)
 function toggleOnOff() {
-  // Get the value from storage
-  let onOffSpan = document.getElementById('onOffStatus');
-  let onOffStatus = onOffSpan.innerText.toLowerCase();
+  // Get the status from the ahegao switch
+  // The text inside the button
+  onOffSwitch = document.getElementById("onOffSwitch");
+  let onOffStatus = onOffSwitch.innerText.toLowerCase();
 
-  // Thank you, https://stackoverflow.com/questions/31696279/url-remains-undefined-in-chrome-tabs-query
-  // We use this because calling window.location from within a popup
-  //  returns the URL of the popup instead of the current website
-  chrome.tabs.query({'active': true, 'currentWindow': true}, function (tabs) {
-    let url = tabs[0].url;
-    let hostname = extractHostname(url);
+  // If on,
+  // Toggle button to Off mode and save this site's
+  //  hostname to storage
+  if (onOffStatus.includes("on")) {
+    // Save the hostname to storage to avoid repointing
+    chrome.storage.sync.set({[hostname]:true}, function() {
+      // Toggle button
+      // alert('we switch off');
+      onOffSwitch.innerText = "Off";
+      document.getElementById('onOffSwitch').style.background = "lightCoral";
 
-    // If on,
-    // Toggle button to Off mode and save this site's
-    //  hostname to storage
-    if (onOffStatus === "on") {
-      // Save
-      chrome.storage.sync.set({[hostname]:true}, function() {
-        // Toggle button
-        onOffSpan.innerText = "Off";
-        document.getElementById('onOffSwitch').style.background = "lightCoral";
+      currentMode.innerText = "Please refresh the page ~";
+    });
+  }
+  // Else, if off,
+  // Toggle button to On mode and remove this site's hostname
+  //  from storage
+  // Finally, run animeTime
+  else if (onOffStatus.includes("off")) {
+    // Remove
+    // Note: you would want to use try-catch if you run a metric ton of
+    //  operations, but we assume our users operate within reason, so we
+    //  won't observe the try-catch practice here aka we are laaaazyyyyy
+    chrome.storage.sync.remove(hostname, function() {});
+
+    // Get the current category
+    chrome.storage.sync.get("currentURLs", function(returnValue) {
+      category = returnValue["currentURLs"];
+      // alert(category);
+
+      // ahegao
+      // do the live reload by sending message to active tab
+      chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, {category});
       });
-    }
-    // Else, if off,
-    // Toggle button to On mode and remove this site's hostname
-    //  from storage
-    // Finally, run animeTime
-    else if (onOffStatus === "off") {
-      // Remove
-      // Note: you would want to use try-catch if you run a metric ton of
-      //  operations, but we assume our users operate within reason, so we
-      //  won't observe the try-catch practice here aka we are laaaazyyyyy
-      chrome.storage.sync.remove([hostname], function() {});
 
-      onOffSpan.innerText = "On";
-      document.getElementById('onOffSwitch').style.background = "lightGreen";
-      alert('anime time');
-      animeTime();
-    }
-  });
+      // Set the switch button coloring appropriately
+      currentMode.innerText = categoryPrompt + category;
+
+      onOffSwitch.innerText = "On";
+      onOffSwitch.style.background = "lightGreen";
+    });
+  }
 }
 
 // Function buttonOnClick
 // When a category is clicked, we will set that value in storage
 //  and then update the images on the page to reflect the changed category
 function buttonOnClick() {
-  saveToStorage(this.id);
-  document.getElementById("status").style.visibility = "";
+  // If ahegao is off, do nothing
+  // The text inside the ahegao switch
+  onOffSwitch = document.getElementById("onOffSwitch");
+  let onOffStatus = onOffSwitch.innerText.toLowerCase();
 
-  // set the right text for the extension page
-  let category = this.id;
-  let mode = document.getElementById('currentMode');
-  if (mode) {
-    mode.innerText = category;
+  // If off,
+  // Do nothing
+  if (onOffStatus.includes("off")) {
+    return;
   }
-  // do the live reload by sending message to active tab
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {category});
-  });
+
+  // Else,
+  else {
+    // alert(this.id);
+    category = this.id;
+    chrome.storage.sync.set({currentURLs:category}, function() {});
+
+    // do the live reload by sending message to active tab
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, {category});
+    });
+  }
 }
 
 // Function initPopup
@@ -98,36 +116,57 @@ function buttonOnClick() {
 // Add the event listeners to the buttons in the popup, enabling
 //  desired functionality
 function initPopup() {
-  // onOffSwitch recolor
+  // alert('popup opened');
+  // Attach event listeners for click events
+  // Thank you, https://www.w3schools.com/js/js_htmldom_eventlistener.asp
+  onOffSwitch.addEventListener("click", toggleOnOff);
+
+  for (let btn = 0; buttons[btn]; btn++) {
+  buttons[btn].addEventListener("click", buttonOnClick);
+  }
+
+  // onOffSwitch recolor based on page status
   // Thank you, https://stackoverflow.com/questions/31696279/url-remains-undefined-in-chrome-tabs-query
   // We use this because calling window.location from within a popup
   //  returns the URL of the popup instead of the current website
   chrome.tabs.query({'active': true, 'currentWindow': true}, function (tabs) {
     let url = tabs[0].url;
-    let hostname = extractHostname(url);
+    hostname = extractHostname(url);
 
     // If URL is in storage, color the toggleOnOff button in "Off" mode
-    chrome.storage.sync.get([hostname], function(returnValue) {
-      if (returnValue.hostname) {
-        // Toggle button
-        onOffSpan.innerText = "Off";
-        document.getElementById('onOffSwitch').style.background = "lightCoral";
+    chrome.storage.sync.get(hostname, function(returnValue) {
+      // alert(returnValue[hostname]);
+
+      if (returnValue[hostname]) {
+        // Recolor button
+        onOffSwitch.innerText = "Off";
+        onOffSwitch.style.background = "lightCoral";
+
+        currentMode.innerText = "ahegao is off 🤔???";
       }
-      // Else, do nothing as the default for the button is the "On" mode
+      // Else, the button is the "On" mode, so just set the category text
+      else {
+        chrome.storage.sync.get("currentURLs", function(returnValue) {
+          category = returnValue["currentURLs"];
+
+          currentMode.innerText = categoryPrompt + category;
+        });
+      }
     });
   });
-
-  // Attach event listeners for click events
-  // Thank you, https://www.w3schools.com/js/js_htmldom_eventlistener.asp
-  let onOffPara = document.getElementById("onOffSwitch");
-  onOffPara.addEventListener("click", toggleOnOff);
-
-  // Iterate over the buttons to add event listener
-  let buttons = document.getElementsByTagName("button");
-
-  for (let btn = 0; buttons[btn]; btn++) {
-  buttons[btn].addEventListener("click", buttonOnClick);
-  }
 }
+
+let categoryPrompt = "Current mode: ";
+let hostname;
+let category;
+
+// Get the on/off button
+let onOffSwitch = document.getElementById("onOffSwitch");
+
+// The category buttons
+let buttons = document.getElementsByTagName("button");
+
+// The paragraph under the switch button
+let currentMode = document.getElementById("currentMode");
 
 initPopup();
