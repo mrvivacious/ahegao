@@ -104,6 +104,9 @@ function buttonOnClick() {
     category = this.id;
     chrome.storage.sync.set({currentURLs:category}, function() {});
 
+    // Set the popup
+    currentMode.innerText = categoryPrompt + category;
+
     // do the live reload by sending message to active tab
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       chrome.tabs.sendMessage(tabs[0].id, {category});

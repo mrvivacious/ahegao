@@ -17,14 +17,14 @@
              "128": "icons/heart-icon-128.png" }, */
 
   "background": {
-      "scripts": ["links.js", "javascript.js"],
+      "scripts": ["links.js", "ahegao.js"],
       "persistent": false
       },
 
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["links.js", "javascript.js"],
+      "js": ["links.js", "ahegao.js"],
       "run_at": "document_start"
     }
   ],
