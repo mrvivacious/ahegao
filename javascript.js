@@ -7,48 +7,6 @@
 // o enable multiple lists at a time
 // o preview mode
 
-// onOffSwitch
-// TODO do we really need to use jquery, try to use the vanilla javascript method
-// Maybe make a separate file for popup functions cuz this file is getting
-//  a little too verbose given the context for me
-$(document).on("click", "p", function(e) {
-  // Get the value from storage
-  let onOffSpan = document.getElementById('onOffStatus');
-  let onOffStatus = onOffSpan.innerText.toLowerCase();
-
-  // alert(onOffStatus);
-
-  // If on, do off process
-  if (onOffStatus === "on") {
-    onOffSpan.innerText = "Off";
-    document.getElementById('onOffSwitch').style.background = "lightCoral";
-  }
-
-  // If off, do on process
-  if (onOffStatus === "off") {
-    onOffSpan.innerText = "On";
-    document.getElementById('onOffSwitch').style.background = "lightGreen";
-  }
-});
-
-// Button onclick functionality
-// Thank u jQuery
-$(document).on("click", "button", function(e) {
-  set(this.id);
-  document.getElementById("status").style.visibility = "";
-
-  // set the right text for the extension page
-  const category = this.id;
-  let mode = document.getElementById('currentMode');
-  if (mode) {
-    mode.innerText = category;
-  }
-  // do the live reload by sending message to active tab
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {category});
-  });
-});
-
 // Function set
 // Set the desired list as the parameter for currentURLs in storage
 //  to maintain content persistence throughout web-browsing
@@ -130,6 +88,8 @@ function animeTime() {
   let imgs = document.getElementsByTagName('img');
   let len = imgs.length;
 
+  // alert(len);
+
   // iterate thru all the images and change their src
   for (let img = 0; img < len; img++) {
     let url = getRandomAnimePic();
@@ -177,5 +137,4 @@ let currentURLs;
 // Used for sites that reload images
 let dictURL = {};
 
-
-// main();
+main();

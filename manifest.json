@@ -17,14 +17,14 @@
              "128": "icons/heart-icon-128.png" }, */
 
   "background": {
-      "scripts": ["jquery.min.js", "links.js", "javascript.js"],
+      "scripts": ["jquery.min.js", "links.js", "javascript.js", "popupFunctions.js"],
       "persistent": false
       },
 
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["jquery.min.js", "links.js", "javascript.js"],
+      "js": ["jquery.min.js", "links.js", "javascript.js", "popupFunctions.js"],
       "run_at": "document_end"
     }
   ],
