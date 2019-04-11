@@ -11,9 +11,9 @@
 // Set the desired list as the parameter for currentURLs in storage
 //  to maintain content persistence throughout web-browsing
 // @param category The category to set, taken from the id of the button clicked
-function set(category) {
+function saveToStorage(category) {
   // Update the value in storage, then update the category var in our window, then run animeTime to replace the images
-  chrome.storage.local.set({currentURLs:category}, function() {});
+  chrome.storage.sync.set({currentURLs:category}, function() {});
 }
 
 // Function getRandomAnimePic
@@ -77,7 +77,7 @@ function setCategory(category) {
       break;
     default:
       currentURLs = ahegaoURLs;
-      set('ahegao');
+      saveToStorage('ahegao');
   }
 }
 
@@ -88,7 +88,7 @@ function animeTime() {
   let imgs = document.getElementsByTagName('img');
   let len = imgs.length;
 
-  // alert(len);
+  alert(len);
 
   // iterate thru all the images and change their src
   for (let img = 0; img < len; img++) {
@@ -112,41 +112,45 @@ function main() {
     // add message receiver for live reload
     chrome.runtime.onMessage.addListener(acceptExtensionMessage);
 
-    // Thank you, https://stackoverflow.com/questions/31696279/url-remains-undefined-in-chrome-tabs-query
-    // We use this because calling window.location from within a popup
-    //  returns the URL of the popup instead of the current website
-    chrome.tabs.query({'active': true, 'currentWindow': true}, function (tabs) {
-      let url = tabs[0].url;
-      let hostname = extractHostname(url);
+    // Is our current website off-listed?
+    // Get the URL, and then get the hostname
+    let url = window.location.hostname;
+    let hostname = extractHostname(url);
 
-      // If URL is in storage, do not proceed
-      chrome.storage.sync.get([hostname], function(returnValue) {
-        if (returnValue.hostname) {
-          return;
-        }
-        // Proceed with animeTime
-        else {
-          chrome.storage.local.get("currentURLs", function(returnValue) {
-            let category = returnValue.currentURLs;
-            let mode = document.getElementById('currentMode');
+    // alert('hostname = ' + hostname);
 
-            if (mode === undefined) {
-              mode = 'ahegao';
-            }
-            // Set our category and load the pics
-            if (mode) {
-              mode.innerText = category;
-            }
-
-            setCategory(category);
-            animeTime();
-
-            // Continually check
-            setInterval(review, 1000);
-          }); // chrome.storage.local.get currentURLs
-        } // else
-      }); // chrome.storage.sync.get hostname
-    }); // chrome.tabs.query
+    // If URL is in storage, do not proceed
+    chrome.storage.sync.get([hostname], function(returnValue) {
+      // Found
+      if (returnValue.hostname) {
+        alert('Is off listed');
+        return;
+      }
+      // Proceed with animeTime
+      else {
+        alert('is not off listed')
+        // chrome.storage.sync.get("currentURLs", function(returnValue) {
+        //   let category = returnValue.currentURLs;
+        //   let mode = document.getElementById('currentMode');
+        //
+        //   // Set to ahegao by default
+        //   if (category === undefined) {
+        //     category = 'ahegao';
+        //     saveToStorage(category);
+        //   }
+        //   // Set our category and load the pics
+        //   if (mode) {
+        //     mode.innerText = category;
+        //   }
+        //
+        //   setCategory(category);
+        //   animeTime();
+        //
+        //   // Continually check
+        //   setInterval(review, 1000);
+        // }); // chrome.storage.sync.get currentURLs
+      } // else
+    }); // chrome.storage.sync.get hostname
   } // window.onload
 }
 

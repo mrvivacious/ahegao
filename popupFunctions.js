@@ -78,7 +78,7 @@ function toggleOnOff() {
 // When a category is clicked, we will set that value in storage
 //  and then update the images on the page to reflect the changed category
 function buttonOnClick() {
-  set(this.id);
+  saveToStorage(this.id);
   document.getElementById("status").style.visibility = "";
 
   // set the right text for the extension page
@@ -94,10 +94,30 @@ function buttonOnClick() {
 }
 
 // Function initPopup
+// Color the onOffSwitch based on on/off setting of current website
 // Add the event listeners to the buttons in the popup, enabling
-//  desird functionality
+//  desired functionality
 function initPopup() {
-  // onOffSwitch
+  // onOffSwitch recolor
+  // Thank you, https://stackoverflow.com/questions/31696279/url-remains-undefined-in-chrome-tabs-query
+  // We use this because calling window.location from within a popup
+  //  returns the URL of the popup instead of the current website
+  chrome.tabs.query({'active': true, 'currentWindow': true}, function (tabs) {
+    let url = tabs[0].url;
+    let hostname = extractHostname(url);
+
+    // If URL is in storage, color the toggleOnOff button in "Off" mode
+    chrome.storage.sync.get([hostname], function(returnValue) {
+      if (returnValue.hostname) {
+        // Toggle button
+        onOffSpan.innerText = "Off";
+        document.getElementById('onOffSwitch').style.background = "lightCoral";
+      }
+      // Else, do nothing as the default for the button is the "On" mode
+    });
+  });
+
+  // Attach event listeners for click events
   // Thank you, https://www.w3schools.com/js/js_htmldom_eventlistener.asp
   let onOffPara = document.getElementById("onOffSwitch");
   onOffPara.addEventListener("click", toggleOnOff);

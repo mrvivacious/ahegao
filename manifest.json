@@ -25,7 +25,7 @@
     {
       "matches": ["<all_urls>"],
       "js": ["jquery.min.js", "links.js", "javascript.js", "popupFunctions.js"],
-      "run_at": "document_end"
+      "run_at": "document_start"
     }
   ],
 
