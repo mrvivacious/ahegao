@@ -54,16 +54,18 @@ a:link {
   background-color: transparent;
   text-decoration: none;
   outline: none;
+  color: brown;
 }
 
 a:visited {
   background-color: transparent;
   text-decoration: none;
   outline: none;
+  color: brown;
 }
 
 a:hover {
-  color: pink;
+  color: tan;
   background-color: transparent;
   outline: none;
   /*text-decoration: underline;*/
