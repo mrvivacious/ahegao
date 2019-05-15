@@ -1,22 +1,26 @@
 {
   "manifest_version": 2,
 
-  "name": "ahegao",
-  "description": "animes",
+  "name": "Ahegao",
+  "description": "All the images are belong to two-dimensional art",
   "version": "1.0",
   "author": "Vivek Bhookya",
 
-  "browser_action": {
-    "default_icon": "ahegao_icon.png",
-    "default_popup": "index.html",
-    "default_title": "ahegaoooo"
+
+
+  "icons": { 
+      "16": "icons/ahegao_icon_16.png",
+      "48": "icons/ahegao_icon_48.png",
+      "128": "icons/ahegao_icon_128.png" 
   },
 
-  /* "icons": { "16": "icons/heart-icon-16.png",
-             "48": "icons/heart-icon-48.png",
-             "128": "icons/heart-icon-128.png" }, */
+  "browser_action": {
+    "default_icon": "icons/ahegao_icon.png",
+    "default_popup": "index.html",
+    "default_title": "Ahegaoooo"
+  },
 
-  "background": {
+    "background": {
       "scripts": ["links.js", "ahegao.js"],
       "persistent": false
       },
