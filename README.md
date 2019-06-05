@@ -1,7 +1,7 @@
 ![ahegao doing work on CNN, with the OWO extension](ahegOWO.png)
 <em>ahegao is responsible for the images, the <a href="https://chrome.google.com/webstore/detail/owo/jolaggjkdhhgcdhcjjhfkkbllefoggob">OWO Chrome extension</a> is responsible for the text manipulation</em>
 
-# ahegao (unreleased)
+# [ahegao](https://chrome.google.com/webstore/detail/ahegao/oljledgdggjpjoalodcijcfablcdojmn)
 I own none of these pictures app is rated M for Might make you uncomfortable
 
 
